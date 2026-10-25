@@ -1,0 +1,22 @@
+# Local virtual environment (recreated by `uv run`)
+.venv/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build / packaging output
+build/
+dist/
+*.egg-info/
+
+# Menagerie and other large third-party assets
+third_party/
+
+# Trained policies and archives
+*.zip
+*.pkl
