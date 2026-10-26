@@ -20,3 +20,10 @@ third_party/
 # Trained policies and archives
 *.zip
 *.pkl
+
+# Training runs (models, normalizers, logs)
+runs/
+
+# colcon output (ros2_ws)
+install/
+log/

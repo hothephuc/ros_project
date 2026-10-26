@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!-- One leg: hip roll, hip pitch, knee and ankle pitch. Instantiated twice, with side = left / right. -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="hip_y" value="0.08"/>     <!-- lateral offset of each hip from the torso centre -->
+  <xacro:property name="thigh_len" value="0.30"/>
+  <xacro:property name="shin_len" value="0.30"/>
+  <xacro:property name="foot_x" value="0.20"/>
+  <xacro:property name="foot_y" value="0.10"/>
+  <xacro:property name="foot_z" value="0.04"/>
+  <xacro:property name="effort" value="100"/>
+  <xacro:property name="velocity" value="10"/>
+
+  <xacro:macro name="leg" params="side reflect">
+
+    <joint name="${side}_hip_roll" type="revolute">
+      <parent link="torso"/>
+      <child link="${side}_hip"/>
+      <origin xyz="0 ${reflect * hip_y} ${-torso_z / 2}"/>
+      <axis xyz="1 0 0"/>
+      <limit lower="-0.5" upper="0.5" effort="${effort}" velocity="${velocity}"/>
+      <dynamics damping="0.5"/>
+    </joint>
+
+    <link name="${side}_hip">
+      <visual>
+        <geometry><sphere radius="0.045"/></geometry>
+        <material name="joint_grey"/>
+      </visual>
+      <xacro:box_inertia m="0.3" x="0.06" y="0.06" z="0.06"><origin xyz="0 0 0"/></xacro:box_inertia>
+    </link>
+
+    <joint name="${side}_hip_pitch" type="revolute">
+      <parent link="${side}_hip"/>
+      <child link="${side}_thigh"/>
+      <origin xyz="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="-1.5" upper="1.0" effort="${effort}" velocity="${velocity}"/>
+      <dynamics damping="0.5"/>
+    </joint>
+
+    <link name="${side}_thigh">
+      <visual>
+        <origin xyz="0 0 ${-thigh_len / 2}"/>
+        <geometry><cylinder radius="0.04" length="${thigh_len}"/></geometry>
+        <material name="limb_blue"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${-thigh_len / 2}"/>
+        <geometry><cylinder radius="0.04" length="${thigh_len}"/></geometry>
+      </collision>
+      <xacro:cylinder_inertia m="1.5" r="0.04" h="${thigh_len}"><origin xyz="0 0 ${-thigh_len / 2}"/></xacro:cylinder_inertia>
+    </link>
+
+    <joint name="${side}_knee" type="revolute">
+      <parent link="${side}_thigh"/>
+      <child link="${side}_shin"/>
+      <origin xyz="0 0 ${-thigh_len}"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="0.0" upper="2.0" effort="${effort}" velocity="${velocity}"/>
+      <dynamics damping="0.5"/>
+    </joint>
+
+    <link name="${side}_shin">
+      <visual>
+        <origin xyz="0 0 ${-shin_len / 2}"/>
+        <geometry><cylinder radius="0.035" length="${shin_len}"/></geometry>
+        <material name="limb_blue"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${-shin_len / 2}"/>
+        <geometry><cylinder radius="0.035" length="${shin_len}"/></geometry>
+      </collision>
+      <xacro:cylinder_inertia m="1.0" r="0.035" h="${shin_len}"><origin xyz="0 0 ${-shin_len / 2}"/></xacro:cylinder_inertia>
+    </link>
+
+    <joint name="${side}_ankle_pitch" type="revolute">
+      <parent link="${side}_shin"/>
+      <child link="${side}_foot"/>
+      <origin xyz="0 0 ${-shin_len}"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="-1.0" upper="1.0" effort="${effort}" velocity="${velocity}"/>
+      <dynamics damping="0.5"/>
+    </joint>
+
+    <link name="${side}_foot">
+      <visual>
+        <origin xyz="0.03 0 ${-foot_z / 2}"/>
+        <geometry><box size="${foot_x} ${foot_y} ${foot_z}"/></geometry>
+        <material name="foot_dark"/>
+      </visual>
+      <collision>
+        <origin xyz="0.03 0 ${-foot_z / 2}"/>
+        <geometry><box size="${foot_x} ${foot_y} ${foot_z}"/></geometry>
+      </collision>
+      <xacro:box_inertia m="0.5" x="${foot_x}" y="${foot_y}" z="${foot_z}"><origin xyz="0.03 0 ${-foot_z / 2}"/></xacro:box_inertia>
+    </link>
+
+    <gazebo reference="${side}_foot">
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>

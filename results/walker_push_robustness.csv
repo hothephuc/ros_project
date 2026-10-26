@@ -1,0 +1,15 @@
+run,push_N,mean_return,std_return,full_episodes,episodes
+ppo_5m_norm,0,4920,6,5,5
+ppo_5m_norm,50,4412,887,4,5
+ppo_5m_norm,100,2220,955,0,5
+ppo_5m_norm,150,1562,1330,0,5
+ppo_5m_norm,200,1528,1297,0,5
+ppo_5m_norm,250,2018,1342,0,5
+ppo_5m_norm,300,755,521,0,5
+ppo_5m_push,0,5698,9,5,5
+ppo_5m_push,50,5641,66,5,5
+ppo_5m_push,100,4994,1131,4,5
+ppo_5m_push,150,3837,1412,2,5
+ppo_5m_push,200,1991,2338,1,5
+ppo_5m_push,250,2668,2266,1,5
+ppo_5m_push,300,1809,1846,1,5

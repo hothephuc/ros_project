@@ -1,0 +1,20 @@
+# Step B1: ROS 2 Jazzy + Gazebo Harmonic desktop in the browser (noVNC), with ros2_ws mounted.
+#
+#   docker compose -f docker/compose.yaml up        # then open http://localhost:6080 (password: ubuntu)
+#
+# Inside the desktop's terminal, once:
+#   sudo apt update && sudo apt install -y ros-jazzy-ros-gz ros-jazzy-gz-ros2-control \
+#       ros-jazzy-ros2-controllers ros-jazzy-xacro ros-jazzy-joint-state-publisher-gui liburdfdom-tools
+# Then:
+#   cd ~/ros2_ws && colcon build --symlink-install && source install/setup.bash
+#   ros2 launch biped_description gazebo.launch.py
+services:
+  ros:
+    image: tiryoh/ros2-desktop-vnc:jazzy
+    ports:
+      - "6080:80"
+    shm_size: 512m
+    environment:
+      - PASSWORD=ubuntu
+    volumes:
+      - ../ros2_ws:/home/ubuntu/ros2_ws
